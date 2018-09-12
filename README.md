@@ -8,3 +8,7 @@ Repositório de estudo do ES6.
 - Variáveis: let, const, Temporal Dead Zone
 - Arrow Function
 - Template Literals
+- Tagged Template
+- Métodos de Array
+- Destructuring
+- Spread e Rest

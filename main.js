@@ -45,7 +45,7 @@ const loveArrowSingle = ireland.map(name => {
 })
 console.log(loveArrowSingle)
 
-const loveArrowOneLine = ireland.map( name => `I love ${name}!` )
+const loveArrowOneLine = ireland.map(name => `I love ${name}!` )
 console.log(loveArrowOneLine)
 
 const loveChain = ireland
@@ -120,3 +120,210 @@ const markup = `
         </footer>
     </article>
 `;
+
+document.body.innerHTML = markup;
+
+// Tagged template
+const city = 'Dublin'
+const something = 'Guinness'
+const otherThing = 'Leprachauns'
+
+function green(template, ...values) {
+    return template.reduce((accumulator, part, i) => {
+        return `
+            ${accumulator}
+            <span class="green">${values[i-1].toUpperCase()}</span>
+            ${part}
+        `
+    })
+}
+
+const ireland2 = green`I live in ${city} the city of ${something} and ${otherThing}!`
+
+document.body.innerHTML = ireland2
+
+
+// Shorthand Properties
+// Para objetos, se o nome da propriedade e do valor forem iguais, ele não precisa ser repetido
+let firstName = 'William'
+let surname = 'Justen'
+let age = 26
+
+const person = {
+    firstName,
+    surname,
+    age,
+    hello(){ // para método do objeto, não há mais necessidade para colocar o funtion()
+        console.log('Hello!')
+    }
+}
+
+console.log(person)
+person.hello()
+
+// Default Parameters
+// Se o parâmetro não existir, ele coloca um valor padrão definido pelo programador
+function hello(name = 'William', surname = 'Justen') {
+    console.log(`Hello ${name} ${surname}! How are you?`)
+}
+
+hello() // retorna Hello William Justen! How are you?
+hello('Jonar', 'Mendes')
+hello('Jonas')
+
+
+// Métodos para Strings
+let text2 = 'Lorem ipsum dolor sit amet'
+
+console.log(text2.startsWith('rem', 2)) // o segundo parâmetro define a partir de qual caracter ele vai começar a contar
+console.log(text2.endsWith('ame', 25)) // o segundo parâmetro define qual o range de caracteres que ele conta
+console.log(text2.includes('ipsum')) // procura dentro da string a string definida como parâmetro
+console.log('lol'.repeat(10)) // retorna o texto 10 vezes
+
+
+// Métodos de arrays
+// Array.from()
+const text = 'William'
+console.log(Array.from(text)) // cria um array usando cada caracter como item
+
+const list = document.querySelectorAll('#list li')
+const listArray = Array.from(list) // transforma o node list em array, habilitando métodos próprios de array
+
+// Array.of()
+const arrayOf = Array.of(1, 4, 'William', {nome: 'Jonas'})
+console.log(arrayOf)
+
+// Array.find() e Array.findIndex()
+const sampleArray = [4, -5, 0, -1]
+const underZero = sampleArray.find( x => x < 0 )
+console.log(underZero) // retorna o PRIMEIRO item que está dentro da condição
+
+const underZeroIndex = sampleArray.findIndex( x => x < 0 )
+console.log(underZeroIndex) // retorna o indíce que está dentro da condição
+
+// Array.find()
+const data = [
+    {
+        name: 'Wiliiam',
+        age: 26,
+        city: 'Dublin'
+    },
+    {
+        name: 'Jonas',
+        age: 22,
+        city: 'Cologne'
+    }
+]
+
+const will2 = data.find( will2 => will.name === 'William' )
+console.log(will2)
+
+// Array.fill()
+const arr2 = new Array(50)
+arr2.fill('lol', 1, 3) // o primeiro parâmetro define o que vai ser inserido, segundo, em qual índice e o último até qual índice
+
+console.log(arr2)
+
+
+// Destructuring
+// Destructuring facilita a nomeação de variáveis para nomes e valores de um objeto
+var destruct = {
+    name2: 'William',
+    surname2: 'Justen',
+    age: 25,
+    blog: 'https://willianjusten.com.br',
+    social: {
+        twitter: '@Willian_Justen',
+        facebook: '/willianjusten'
+    }
+}
+
+const { name2, surname2 } = destruct
+console.log(name2)
+console.log(surname2)
+
+const { facebook, twitter } = destruct.social // para objeto dentro de objeto
+console.log(facebook)
+console.log(twitter)
+
+const { facebook: fb } = destruct.social // também é permitido mudar o nome da variável para que não seja o nome do valor
+console.log(fb)
+
+const { city2 = 'Dublin' } = destruct
+
+// Destructuring em arrays
+const arr3 = [ 'Willian', 'Justen', 26, 'Dublin' ]
+const [ nameArray, surnameArray, ageArray, cityArray ] = arr3
+
+console.log(nameArray)
+console.log(surnameArray)
+console.log(ageArray)
+console.log(cityArray)
+
+// Fazendo swap em variáveis
+    let a = 42
+    let b = 21
+
+    console.log('a: ', a)
+    console.log('b: ', b);
+
+    [a, b] = [b, a] // realiza a troca de variáveis
+
+    console.log('a: ', a)
+    console.log('b: ', b)
+
+
+// Spread e Rest
+// Spread operator
+let front = ['react', 'vue', 'angular']
+let back = ['python', 'ruby', 'nodejs']
+
+console.log([...'will']) // cria uma array, cujos itens sao cada caracter da string
+console.log(...front) // imprime todos os itens do array
+
+let fullStack = [...front, 'RxJS', ...back]
+console.log(fullStack)
+
+// Spread tambem pode ser usado dentro de funcoes
+function makeSandwich(bread, cheese, sauce){
+    console.log(`Your sandwich with ${bread} bread, ${cheese} cheese and ${sauce} is done!`)
+}
+
+const ingredients = [ 'white', 'cheddar', 'barbecue' ]
+makeSandwich(...ingredients) // chama a funcao usando todos os itens do array como parametro
+
+// Rest params
+
+function multiply(mult, ...args){ // dessa forma, é informado que há mais argumentos, porém não se sabe a quantidade deles
+    return args.map(arg => arg * mult)
+}
+
+console.log(multiply(5,2,5,6))
+
+
+// Promises
+// Promise é um objeto com uma ação que não foi finalizada, mas que no futuro será realizada. Importante para requisições assíncronas
+var defer = new Promise((resolve, reject) => {
+    setTimeout(() => {
+
+        if (true){
+            resolve('Hello! It works')
+        } else {
+            reject('Error!')
+        }
+
+    }, 2000)
+})
+
+defer
+    .then((data) => {
+        console.log(data)
+        return 'foo'
+    })
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err))
+
+
+
+
+
