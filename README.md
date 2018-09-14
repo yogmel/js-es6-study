@@ -12,3 +12,10 @@ Repositório de estudo do ES6.
 - Métodos de Array
 - Destructuring
 - Spread e Rest
+- Promises
+- Classes
+- Symbol
+- Iterator e Iterable
+- Generator
+- Proxy
+- Set, WeakSet, Map

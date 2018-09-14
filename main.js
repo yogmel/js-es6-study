@@ -323,7 +323,203 @@ defer
     .then((data) => console.log(data))
     .catch((err) => console.log(err))
 
+// Lidando com múltiplas Promises
+const currency = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve({ currency: 'euro', value: 3.5 })
+    }, 2000)
+})
+
+const countries = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve([ 'Ireland', 'England', 'Scotland' ])
+    }, 600)
+})
+
+Promise
+    .all([currency, countries]) // pega todas as promises e aí dá continuidade no script
+    .then(responses => {
+        console.log(responses)
+    })
+
+    Promise
+    .race([currency, countries]) // imprime somente a primeira e mais rápida requisição
+    .then(responses => {
+        console.log(responses)
+    })
 
 
+// Classes
+// MANEIRA DE CRIAR CLASSES NO ES5
+// function Animal(kind, sound){
+//     //constructor
+//     this.kind = kind
+//     this.sound = sound
+// }
+
+// //method
+// Animal.prototype.hello = function(){
+//     console.log(`${this.sound} I'm a ${this.kind}!`)
+// }
+
+// const dog = new Animal('dog', 'auau')
+// const elephant = new Animal('elephant', 'brrr')
+// console.log(dog)
+// console.log(elephant)
+
+class Animal {
+    constructor(kind, sound){
+        this.kind = kind
+        this.sound = sound
+    }
+
+    hello(){
+        console.log(`${this.sound} I'm a ${this.kind}!`)
+    }
+    static info(){ // só pode ser chamado pelo nome da classe. e.g. Animal.info()
+        console.log('This is a class to create animals')
+    }
+    get Name(){ //tem que ser chamado como propriedade e não um método. e.g. dog.name
+        console.log(`${this.sound} My name is Jake!`)
+    }
+    set nickname(nick) { // cria novas propriedades. e.g. dog.nickname = 'J'
+        this.nick = nick
+    }
+}
+
+const dog = new Animal('dog', 'auau')
+const elephant = new Animal('elephant', 'brrr')
+console.log(dog)
+console.log(elephant)
+
+class Dog extends Animal {
+    constructor(kind, name, sound){
+        super(kind, sound) //tem que ser ativada para chamar todos os métodos de Animal
+        this.sound = sound
+        this.name = name
+    }
+    bark(){
+        console.log(`${this.sound}! I'm ${this.name}!`)
+    }
+}
+
+const dog2 = new Dog('dog', 'Jake', 'auau')
 
 
+// Symbol
+let foo = Symbol('name') // symbols são únicos
+let bar = Symbol('name') // ou seja, foo e bar são diferentes apesar de possuírem o mesmo valor
+
+let obj = {
+    [Symbol('name')]: 'Willian',
+    [Symbol('age')]: 26,
+    city: 'Dublin'
+}
+
+const symbols = Object.getOwnPropertySymbols(obj)
+const data2 = symbols.map( sym => obj[sym])
+console.log(data2)
+
+
+// Iterator e Iterables
+var txt = 'Ireland' // iterable
+var it = txt[Symbol.iterator]() //iterator
+
+for ( letter of txt ) {
+    console.log(letter)
+}
+
+
+// Generator
+function* genNames(){
+    yield 'Willian'
+    yield 'Jonas'
+    yield 'Gabriel'
+}
+
+const names = genNames()
+console.log(names)
+console.log(names.next()) // ele para no primeiro yield a não ser que seja novamente chamado
+console.log(names.next())
+console.log(names.next())
+
+function ajax(url){
+    fetch(url)
+        .then(data => data.json())
+        .then(data => dados.next(data))
+}
+
+function* ajaxGen(){
+    console.log('Buscando posts...')
+    const posts = yield ajax('https://willianjusten.com.br/search.json') // para o script, vai para o ajax. O ajax retorna os dados e dá continuidade no ajaxGen
+    console.log(posts)
+
+    console.log('Buscando posts...')
+    const github = yield ajax('https://api.github.com/users/willianjusten')
+    console.log(github)
+}
+
+const dados = ajaxGen()
+dados.next() // roda o ajaxGen
+
+
+// Proxy
+// Maneira de definir comportamentos diferentes para métodos dentro de um objeto
+let obj2 = {
+    name: 'Willian',
+    age: 26
+}
+
+let proxy = new Proxy(obj2, {
+    get(target, name) {
+        console.log('Alguém está pedindo  o nome =D')
+        return target[name]
+    },
+    set(target, name, value) {
+        console.log('Alguém está mudando o nome!')
+        target[name] = value
+    }
+})
+console.log(proxy.name)
+proxy.name = 'Jonas'
+console.log(proxy.name)
+
+
+// Set
+// Objeto que permite guardar valores únicos de um tipo, seja primitivo ou objeto
+// WeakSet
+// Funciona como Set, porém recebe apenas objetos
+// No WeakSet, .clear(), .values(), for of não funcionam e não permitem interação
+// Map
+// No map, se define chave - valor, parecido com objeto
+// WeakMap
+// é como Map, mas só recebe objetos
+// Dentro do WeakMap e WeakSet, se os objetos que são referenciados forem deletados, eles saem de dentro dos WeakMap e WeakSet
+
+let mySet = new Set(['willian', 'jonas', 'godoy'])
+let myWeakSet = new WeakSet([obj])
+let myMap = new Map()
+
+console.log(mySet.size) // retorna o tamanho do set
+
+console.log('adicionando marcio ao set: ', mySet.add('marcio')) // adiciona itens ao set. ele não adiciona se já existir no set
+
+console.log('deletando willian do set: ', mySet.delete('willian')) // deleta um item
+console.log(mySet)
+
+console.log('minha set tem jonas? ', mySet.has('jonas')) // retorna true ou false, dependendo se há tal item dentro do set
+
+let it2 = mySet.values()
+
+for (name of it2) {
+    console.log(name)
+}
+
+myMap.set('Willian', 26)
+myMap.set('Jonas', 22)
+myMap.set('Godoy', 30)
+console.log(myMap)
+
+
+// Módulos em JS
+// Pequenos trechos de código autocontido, que tem uma única funcionalidade
